@@ -28,3 +28,11 @@ df5 = pd.read_csv("datasets/share-deaths-air-pollution.csv")
 
 
 import all_fonk
+df_list = [df,df2,df3,df4,df5]
+for df in df_list:
+    all_fonk.check_df(df)
+
+for daf in df_list:
+    print(daf.head(10))
+    print("*****************,Tail-*********")
+    print(daf.tail(10))
