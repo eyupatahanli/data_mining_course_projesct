@@ -21,4 +21,10 @@ pd.set_option('display.float_format', lambda x: '%.5f' % x)
 
 #veriyi okumak
 df = pd.read_csv("datasets/PM2.5 Global Air Pollution 2010-2017.csv")
+df2 = pd.read_csv("datasets/death-rates-from-air-pollution.csv")
+df3 = pd.read_csv("datasets/death-rates-total-air-pollution.csv")
+df4 = pd.read_csv("datasets/number-of-deaths-by-risk-factor.csv")
+df5 = pd.read_csv("datasets/share-deaths-air-pollution.csv")
 
+
+import all_fonk
