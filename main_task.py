@@ -2,6 +2,9 @@
 import pandas as pd
 import numpy as np
 import matplotlib.pyplot as plt
+import seaborn as sns
+from sklearn.cluster import KMeans
+from sklearn.preprocessing import StandardScaler
 
 #bazı ayarlar (notebookta gerekli olmayabilir)
 pd.set_option('display.max_columns', None)
@@ -21,8 +24,8 @@ pd.set_option('display.float_format', lambda x: '%.5f' % x)
 """
 
 #veriyi okumak
-df = pd.read_csv("PM2.5 Global Air Pollution 2010-2017.csv")
-
+df = pd.read_csv("datasets/PM2.5 Global Air Pollution 2010-2017.csv")
+df_copy = df.copy()
 #veriye genel bakış
 def check_df(dataframe, head=5):
     print("##################### Shape #####################")
@@ -45,7 +48,15 @@ def check_df(dataframe, head=5):
 
 check_df(df)
 
-# Todo veriye göz atma kısmında bazı görselleştirmeler yapılmalı.
+#todo düzenle
+"""
+plt.figure(figsize=(12,5))
+plt.title("Price Distirbution Graph")
+ax = sns.distplot(df["2010"], color = 'y')
+"""
+
+# todo: model kurulumu ve test değerlendirmeler
+# Todo: veriye göz atma kısmında bazı görselleştirmeler yapılmalı.
 
 """
 verinin boyutuna 
@@ -74,7 +85,54 @@ all_fonk.check_outlier(df,col_name)
 
 #aykırı değer olmadığını gördük
 
+#standartlaştırma adımlarının yapılması
 
+#standart scaler nesnemizi sklern kütüphanesinden çağırdık
+ss = StandardScaler()
 
+df = df.copy()
+df.head()
 
+for col in df.columns[2:]:
+    df[col] = ss.fit_transform(df[[col]])
+df.head()
+#böylelikle veriyi standartlaştırmış olduk
 
+#model kurulumu:
+
+#model için gerekli olan sayısal verileri içeren sütunları ayrı bir df olarak belirleuelim
+
+df_last = df.iloc[:,2:]
+df_last.head()
+
+#tekrar kopya alalım, isimlendirme kolay olsun diye x yapalım
+x = df_last.copy()
+
+#model nesnemizi kuralım, tercihen 4 küme belirledik
+
+kmeans = KMeans(4)
+
+#modelimizi eğitelim
+
+kmeans.fit(x)
+
+#tahmin değerlerini pred değişkeniyle df e ekleyelim
+df["pred"] = pred
+
+df.head()
+
+#her bir gruptaki ülke sayısına bakalım
+df["pred"].value_counts()
+
+# todo ilişkisel analizler
+
+df["Country Name"]
+df[df["pred"]==1]["2010"].mean()
+df[df["pred"]==2]["2010"].mean()
+df[df["pred"]==3]["2010"].mean()
+df[df["pred"]==0]["2010"].mean()
+
+df[df["pred"]==1]["2017"].mean()
+df[df["pred"]==2]["2017"].mean()
+df[df["pred"]==3]["2017"].mean()
+df[df["pred"]==0]["2017"].mean()
